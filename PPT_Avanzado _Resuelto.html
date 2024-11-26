@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Piedra, Papel o Tijeras Comentado</title>
+    <style>
+        /* Estilos generales para el cuerpo de la página */
+        body {
+            font-family: Arial, sans-serif; /* Usa la fuente Arial o cualquier sans-serif */
+            background-color: #282c34; /* Color de fondo oscuro */
+            color: #ffffff; /* Color del texto en blanco */
+            text-align: center; /* Centra todo el contenido */
+            padding: 20px; /* Añade espacio alrededor del contenido */
+        }
+        /* Estilos para el contenedor principal */
+        .container {
+            background-color: #444; /* Color de fondo para el contenedor */
+            padding: 20px; /* Espacio interno */
+            border-radius: 10px; /* Esquinas redondeadas */
+            display: inline-block; /* Permite que el contenedor se ajuste al contenido */
+        }
+        /* Estilos para los títulos h1 */
+        h1 {
+            color: #61dafb; /* Color azul claro para los títulos */
+        }
+        /* Estilos para los botones */
+        .btn {
+            background-color: #61dafb; /* Color de fondo azul claro */
+            border: none; /* Sin borde */
+            padding: 10px 20px; /* Espacio interno */
+            margin: 5px; /* Margen externo */
+            font-size: 16px; /* Tamaño de la fuente */
+            cursor: pointer; /* Cambia el cursor a una mano al pasar por encima */
+        }
+        /* Efecto al pasar el ratón por encima del botón */
+        .btn:hover {
+            background-color: #21a1f1; /* Cambia a un azul más oscuro */
+        }
+        /* Clase para ocultar las pantallas */
+        .pantalla {
+            display: none; /* Oculta el elemento */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Pantalla de bienvenida -->
+        <div id="pantallaBienvenida" class="pantalla">
+            <h1>Bienvenido a Piedra, Papel o Tijeras</h1>
+            <p>¡Prepárate para jugar!</p>
+            <button class="btn" onclick="mostrarPantalla('pantallaSeleccion')">Comenzar</button>
+        </div>
+
+        <!-- Pantalla de selección de jugada -->
+        <div id="pantallaSeleccion" class="pantalla">
+            <h1>Elige tu jugada</h1>
+            <button class="btn" onclick="seleccionarJugada(1)">Piedra 🪨</button>
+            <button class="btn" onclick="seleccionarJugada(2)">Papel 📃</button>
+            <button class="btn" onclick="seleccionarJugada(3)">Tijeras ✂️</button>
+        </div>
+
+        <!-- Pantalla que muestra la jugada de la computadora -->
+        <div id="pantallaJugadaPC" class="pantalla">
+            <h1>La computadora está eligiendo...</h1>
+            <p id="eleccionPC"></p>
+            <button class="btn" onclick="mostrarResultado()">Ver resultado</button>
+        </div>
+
+        <!-- Pantalla que muestra el resultado final -->
+        <div id="pantallaResultado" class="pantalla">
+            <h1>Resultado</h1>
+            <div id="resultado"></div>
+            <button class="btn" onclick="reiniciarJuego()">Jugar de nuevo</button>
+        </div>
+    </div>
+
+    <script>
+     /* Paso 12: Declarar las variables `jugadaJugador` y `jugadaPC`.
+       - Estas variables almacenarán las jugadas seleccionadas por el jugador y la computadora.
+       - Inicia cada una en null.
+       
+       Ejemplo (inicialización de variables):
+       let jugadaJugador = null;
+       let jugadaPC = null;
+    */
+   let jugadaJugador = null ;
+   let jugadaPC = null;
+
+    /* Paso 13: Crear la función `mostrarPantalla(id)`.
+       - Esta función oculta todas las pantallas y muestra solo la pantalla con el id proporcionado como argumento.
+       - Usa `document.getElementById` para acceder a las pantallas.
+       - Aplica `display: 'none'` para las pantallas que deben ocultarse y `display: 'block'` para la pantalla que debe mostrarse.
+       
+       Ejemplo (cómo ocultar una pantalla y mostrar otra):
+       document.getElementById('pantallaBienvenida').style.display = 'none'; 
+       document.getElementById(id).style.display = 'block';
+    */
+   function mostrarPantalla(id){
+    document.getElementById('pantallaBienvenida').style.display = 'none'; 
+    document.getElementById('pantallaSeleccion').style.display = 'none'; 
+    document.getElementById('pantallaJugadaPC').style.display = 'none'; 
+    document.getElementById('pantallaResultado').style.display = 'none'; 
+
+    document.getElementById(id).style.display = 'block';
+   }
+
+    /* Paso 14: Crear la función `seleccionarJugada(jugada)`.
+       - Esta función se ejecuta cuando el jugador selecciona una jugada.
+       - Almacena el valor de la jugada seleccionada por el jugador en `jugadaJugador`.
+       - Genera una jugada aleatoria para la computadora llamando a la función `aleatorio(1, 3)` y la almacena en `jugadaPC`.
+       - Muestra la pantalla "pantallaJugadaPC" usando `mostrarPantalla('pantallaJugadaPC')`.
+       - Simula un retraso de 1.5 segundos con `setTimeout` para mostrar la jugada de la computadora.
+       - Usa `document.getElementById('eleccionPC').textContent` para mostrar la jugada de la computadora, llamando a `obtenerNombreJugada(jugadaPC)`.
+    
+       Ejemplo (cómo usar `setTimeout` para mostrar la jugada de la computadora tras un retraso):
+       setTimeout(function() {
+         document.getElementById('eleccionPC').textContent = 'La computadora eligió: ' + obtenerNombreJugada(jugadaPC);
+       }, 1500);
+    */
+   function seleccionarJugada(jugada){
+    jugadaPC = aleatorio(1,3)
+    setTimeout(function() {
+         document.getElementById('eleccionPC').textContent = 'La computadora eligió: ' + obtenerNombreJugada(jugadaPC);
+       }, 1500);
+   }
+
+    /* Paso 15: Crear la función `mostrarResultado()`.
+       - Esta función compara las jugadas del jugador y la computadora llamando a `determinarGanador(jugadaJugador, jugadaPC)`.
+       - Muestra el resultado en el div con id "resultado" usando `innerHTML`.
+       - Luego, llama a `mostrarPantalla('pantallaResultado')` para mostrar la pantalla de resultados.
+       
+       Ejemplo (cómo mostrar el resultado del juego en el HTML):
+       document.getElementById('resultado').innerHTML = '¡Ganaste!';
+    */
+   function mostrarResultado(){
+    document.getElementById('resultado').innerHTML = '¡Ganaste!';
+   }
+
+    /* Paso 16: Crear la función `reiniciarJuego()`.
+       - Esta función reinicia el juego.
+       - Vuelve a la pantalla de bienvenida llamando a `mostrarPantalla('pantallaBienvenida')`.
+       - Restablece las variables `jugadaJugador` y `jugadaPC` a null.
+       
+       Ejemplo (reiniciar las variables y mostrar la pantalla de bienvenida):
+       jugadaJugador = null;
+       jugadaPC = null;
+       mostrarPantalla('pantallaBienvenida');
+    */
+   function reiniciarJuego(){
+    jugadaJugador = null;
+       jugadaPC = null;
+       mostrarPantalla('pantallaBienvenida');
+   }
+
+    /* Paso 17: Crear la función `aleatorio(min, max)`.
+       - Esta función genera un número entero aleatorio entre los valores `min` y `max` (ambos inclusive).
+       - Se utiliza para generar la jugada aleatoria de la computadora.
+       
+       Ejemplo (cómo generar un número aleatorio entre dos valores):
+       Math.floor(Math.random() * (max - min + 1)) + min;
+    */
+   function aleatorio(min, max){
+    numero = Math.floor(Math.random() * (max - min + 1)) + min;
+    return numero
+   }
+
+    /* Paso 18: Crear la función `obtenerNombreJugada(jugada)`.
+       - Esta función toma un número (`jugada`) y devuelve el nombre correspondiente ("Piedra", "Papel" o "Tijeras").
+       - Se utiliza para mostrar el nombre de la jugada en lugar de un número.
+       
+       Ejemplo (cómo retornar el nombre de la jugada según el número):
+       if (jugada === 1) return 'Piedra';
+       else if (jugada === 2) return 'Papel';
+       else return 'Tijeras';
+    */
+   function obtenerNombreJugada(){
+    if (jugada === 1) return 'Piedra';
+       else if (jugada === 2) return 'Papel';
+       else return 'Tijeras';
+    }
+    /* Paso 19: Crear la función `determinarGanador(jugadaJugador, jugadaPC)`.
+       - Esta función determina el ganador comparando las jugadas del jugador y la computadora.
+       - Devuelve un mensaje indicando si el jugador ganó, perdió o empató.
+       
+       Ejemplo (cómo determinar el ganador según las jugadas):
+       if (jugadaJugador === jugadaPC) return 'Empate';
+       else if (jugadaJugador === 1 && jugadaPC === 3 || jugadaJugador === 2 && jugadaPC === 1 || jugadaJugador === 3 && jugadaPC === 2) return '¡Ganaste!';
+       else return 'Perdiste';
+    */
+   function determinarGanador(jugadaJugador,jugadaPC){
+    if (jugadaJugador === jugadaPC) return 'Empate';
+       else if (jugadaJugador === 1 && jugadaPC === 3 || jugadaJugador === 2 && jugadaPC === 1 || jugadaJugador === 3 && jugadaPC === 2) return '¡Ganaste!';
+       else return 'Perdiste';}
+    </script>
+</body>
+</html>
